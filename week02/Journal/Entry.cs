@@ -1,27 +1,27 @@
+using System;
+
 public class Entry
 {
     private string _date;
-    private string _promptText;
-    private string _entryText;
+    private string _prompt;
+    private string _response;
 
-    public Entry(string date, string promptText, string entryText)
+    public Entry(string date, string prompt, string response)
     {
         _date = date;
-        _promptText = promptText;
-        _entryText = entryText;
+        _prompt = prompt;
+        _response = response;
     }
 
     public void Display()
     {
-        Console.WriteLine($"Date: {_date}");
-        Console.WriteLine($"Prompt: {_promptText}");
-        Console.WriteLine($"Response: {_entryText}");
-        Console.WriteLine();
+        Console.WriteLine($"{_date} - Prompt: {_prompt}");
+        Console.WriteLine($"Response: {_response}\n");
     }
 
     public string ToFileString()
     {
-        return $"{_date}|{_promptText}|{_entryText}";
+        return $"{_date}|{_prompt}|{_response}";
     }
 
     public static Entry FromFileString(string line)
