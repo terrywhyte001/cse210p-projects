@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 public class Scripture
 {
     private Reference _reference;
@@ -6,30 +10,32 @@ public class Scripture
     public Scripture(Reference reference, string text)
     {
         _reference = reference;
-        _words = text.Split(' ').Select(w => new Word(w)).ToList();
-    }
-
-    public void HideRandomWords(int count)
-    {
-        Random rand = new Random();
-        var visibleWords = _words.Where(w => !w.IsHidden).ToList();
-
-        for (int i = 0; i < count && visibleWords.Count > 0; i++)
+        _words = new List<Word>();
+        foreach (var word in text.Split(' '))
         {
-            int index = rand.Next(visibleWords.Count);
-            visibleWords[index].Hide();
-            visibleWords.RemoveAt(index);
+            _words.Add(new Word(word));
         }
     }
 
     public string GetDisplayText()
     {
-        var text = string.Join(" ", _words.Select(w => w.GetDisplayText()));
-        return $"{_reference.GetDisplayText()}\n{text}";
+        return $"{_reference.GetDisplayText()} {string.Join(" ", _words.ConvertAll(w => w.GetDisplayText()))}";
+    }
+
+    public void HideRandomWords(int count)
+    {
+        var shownWords = _words.FindAll(w => w.IsShown());
+        var rand = new Random();
+        for (int i = 0; i < count && shownWords.Count > 0; i++)
+        {
+            int idx = rand.Next(shownWords.Count);
+            shownWords[idx].Hide();
+            shownWords.RemoveAt(idx);
+        }
     }
 
     public bool IsCompletelyHidden()
     {
-        return _words.All(w => w.IsHidden);
+        return _words.TrueForAll(w => !w.IsShown());
     }
 }
