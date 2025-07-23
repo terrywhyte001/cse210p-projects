@@ -5,7 +5,8 @@ public class Video
     public string Title { get; }
     public string Author { get; }
     public int LengthInSeconds { get; }
-    private List<Comment> comments = new List<Comment>();
+
+    private List<Comment> _comments = new List<Comment>();
 
     public Video(string title, string author, int lengthInSeconds)
     {
@@ -16,16 +17,18 @@ public class Video
 
     public void AddComment(Comment comment)
     {
-        comments.Add(comment);
+        _comments.Add(comment);
     }
 
     public int GetCommentCount()
     {
-        return comments.Count;
+        return _comments.Count;
     }
 
     public List<Comment> GetComments()
     {
-        return comments;
+        return _comments;
     }
 }
+
+    
